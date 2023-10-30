@@ -13,23 +13,23 @@
   ],
   "patterns": [
     {
-      "include": "#comment"
+      "include": "#注释"
     },
     {
-      "include": "#property"
+      "include": "#定义属性"
     },
     {
-      "include": "#trait"
+      "include": "#定义特质"
     },
     {
-      "include": "#event-group"
+      "include": "#定义事件组"
     },
     {
-      "include": "#event"
+      "include": "#定义事件"
     }
   ],
   "repository": {
-    "comment": {
+    "注释": {
       "patterns": [
         {
           "match": "//.*$",
@@ -37,7 +37,7 @@
         }
       ]
     },
-    "property": {
+    "定义属性": {
       "name": "meta.property.re0",
       "begin": "(属性)\\s+([\\p{L}\\d]+)+\\s*{",
       "beginCaptures": {
@@ -51,7 +51,10 @@
       "end": "}",
       "patterns": [
         {
-          "include": "#id"
+          "include": "#注释"
+        },
+        {
+          "include": "#绑定编号"
         },
         {
           "include": "#description"
@@ -63,11 +66,11 @@
           "include": "#requirements"
         },
         {
-          "include": "#effects"
+          "include": "#效果"
         }
       ]
     },
-    "trait": {
+    "定义特质": {
       "name": "meta.trait.re0",
       "begin": "(特质)\\s+([\\p{L}\\d]+)+\\s*{",
       "beginCaptures": {
@@ -81,7 +84,16 @@
       "end": "}",
       "patterns": [
         {
-          "include": "#id"
+          "include": "#注释"
+        },
+        {
+          "include": "#绑定编号"
+        },
+        {
+          "include": "#排除项"
+        },
+        {
+          "include": "#效果"
         },
         {
           "include": "#description"
@@ -91,13 +103,10 @@
         },
         {
           "include": "#requirements"
-        },
-        {
-          "include": "#effects"
         }
       ]
     },
-    "event-group": {
+    "定义事件组": {
       "name": "meta.event-group.re0",
       "begin": "(事件组)\\s+([\\p{L}\\d]+)+\\s*{",
       "beginCaptures": {
@@ -111,11 +120,11 @@
       "end": "}",
       "patterns": [
         {
-          "include": "#event-group-item"
+          "include": "#定义事件组事件"
         }
       ]
     },
-    "event-group-item": {
+    "定义事件组事件": {
       "name": "meta.event.re0",
       "begin": "(事件)?\\s+([\\p{L}\\d]+)+\\s*{",
       "beginCaptures": {
@@ -129,7 +138,16 @@
       "end": "}",
       "patterns": [
         {
-          "include": "#id"
+          "include": "#注释"
+        },
+        {
+          "include": "#绑定编号"
+        },
+        {
+          "include": "#排除项"
+        },
+        {
+          "include": "#效果"
         },
         {
           "include": "#description"
@@ -139,13 +157,10 @@
         },
         {
           "include": "#requirements"
-        },
-        {
-          "include": "#effects"
         }
       ]
     },
-    "event": {
+    "定义事件": {
       "name": "meta.event.re0",
       "begin": "(事件)\\s+([\\p{L}\\d]+)+\\s*{",
       "beginCaptures": {
@@ -159,7 +174,7 @@
       "end": "}",
       "patterns": [
         {
-          "include": "#id"
+          "include": "#绑定编号"
         },
         {
           "include": "#description"
@@ -171,23 +186,58 @@
           "include": "#requirements"
         },
         {
-          "include": "#effects"
+          "include": "#效果"
         }
       ]
     },
-    "id": {
-      "patterns": [
-        {
-          "match": "ID\\s+\\d+",
-          "name": "variable.other.property.re0"
-        }
-      ]
+    "绑定编号": {
+      "match": "([Ii][Dd])\\s+(\\d+)",
+      "name": "variable.other.property.re0"
     },
     "description": {
       "patterns": [
         {
           "match": "(动态描述|描述)(?:\\s+(\"[^\"]+\"))?",
           "name": "string.quoted.double.re0"
+        }
+      ]
+    },
+    "排除项": {
+      "patterns": [
+        {
+          "begin": "(排除|exclude|excludes)\\s*{",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.re0"
+            },
+            "2": {
+              "name": "support.type.primitive.re0"
+            }
+          },
+          "end": "}"
+        },
+        {
+          "begin": "(排除|exclude|excludes)\\s*\\[",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.re0"
+            },
+            "2": {
+              "name": "support.type.primitive.re0"
+            }
+          },
+          "end": "]"
+        },
+        {
+          "match": "(排除|excludes?)\\s+([\\p{L}\\d]+)",
+          "captures": {
+            "1": {
+              "name": "keyword.control.re0"
+            },
+            "2": {
+              "name": "support.type.primitive.re0"
+            }
+          }
         }
       ]
     },
@@ -211,7 +261,7 @@
       "match": "([\\p{L}\\d]+)"
     },
     "requirements": {
-      "begin": "(要求)\\s{",
+      "begin": "(要求|requires?)\\s{",
       "beginCaptures": {
         "0": {
           "name": "keyword.control.re0"
@@ -229,9 +279,9 @@
       "name": "keyword.operator.comparison.re0",
       "match": "\\p{L}+\\s*[><=]\\s*\\d+"
     },
-    "effects": {
+    "效果": {
       "name": "meta.effects.re0",
-      "begin": "(效果)\\s*{",
+      "begin": "(效果|effects?)\\s*{",
       "beginCaptures": {
         "1": {
           "name": "keyword.control.re0"
@@ -240,16 +290,16 @@
       "end": "}",
       "patterns": [
         {
-          "include": "#if-contains"
+          "include": "#若有"
         },
         {
-          "include": "#if-else"
+          "include": "#否则"
         }
       ]
     },
-    "if-contains": {
+    "若有": {
       "name": "meta.if-contains.re0",
-      "begin": "(若)\\s+([\\p{L}\\d]+)\\s+(有)\\s*{",
+      "begin": "(若)\\s+([\\p{L}\\d]+)\\s+(有)\\[([^\\])]\\s*{",
       "beginCaptures": {
         "1": {
           "name": "keyword.control.re0"
@@ -264,7 +314,7 @@
       "end": "}",
       "patterns": null
     },
-    "if-else": {
+    "否则": {
       "name": "meta.if-else.re0",
       "begin": "(否则)\\s*{",
       "beginCaptures": {
