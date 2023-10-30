@@ -9,106 +9,161 @@ uuid: 985735d9-c190-4f73-8c84-3628ac693154
 information_for_contributors:
   - 'aster: 19260817@qq.com'
 patterns:
-  - include: '#comment'
-  - include: '#block'
-  - include: '#tags'
-  - include: '#invalid'
+- include: "#comment"
+- include: "#property"
+- include: "#trait"
+- include: "#event-group"
+- include: "#event"
 repository:
   comment:
     patterns:
-      - begin: (^[ \t]+)?(?=;)
-        beginCaptures:
-          '1': {name: punctuation.whitespace.comment.leading.ass}
-        end: (?!\G)
-        patterns:
-          - begin: \;
-            beginCaptures:
-              '0': {name: punctuation.definition.comment.ass}
-            end: "[\r\n]"
-            name: comment.line.semicolon.ass
-      - begin: (Comment)(:)(?:\s*)
-        beginCaptures:
-          '1': {name: punctuation.definition.comment.ass}
-          '2': {name: punctuation.definition.keyValue.ass}
-        end: "[\r\n]"
-        name: comment.line.ass
-  tags:
+    - match: "//.$"
+      name: comment.line.re0
+  property:
     patterns:
-      - begin: (?:^[ \t]+)?(Format)(:)(?:\s*)
-        beginCaptures:
-          '1': {name: entity.name.tag.ass}
-          '2': {name: punctuation.definition.keyValue.ass}
-        end: "[\r\n]"
-        patterns:
-          - match: \,
-            name: punctuation.separator.ass
-          - match: ([a-zA-Z])
-            name: storage.type.ass
-      - begin: (?:^[ \t]+)?(Style|Dialogue)(:)(?:\s*)
-        beginCaptures:
-          '1': {name: entity.name.tag.ass}
-          '2': {name: punctuation.definition.keyValue.ass}
-        end: "[\r\n]"
-        patterns:
-          - include: '#function'
-          - include: '#literal'
-      - begin: (?:^[ \t]+)?([A-Za-z\s]+)(:)(?:\s*)
-        beginCaptures:
-          '1': {name: entity.name.tag.ass}
-          '2': {name: punctuation.definition.keyValue.ass}
-        end: "[\r\n]"
-        patterns:
-          - include: '#literal'
-  block:
+    - name: meta.property.re0
+      begin: (属性)\s+([\p{L}\d]+)+\s*{
+      beginCaptures:
+        '1':
+          name: keyword.control.re0
+        '2':
+          name: support.type.primitive.re0
+      end: "}"
+      patterns:
+      - include: "#id"
+      - include: "#description"
+      - include: "#options"
+      - include: "#conditions"
+      - include: "#effects"
+  trait:
     patterns:
-      - match: (?:^[ \t]+)?(\[)(.*)(\])
-        name: entity.name.section.group-title.ass
-        captures:
-          '1': {name: punctuation.definition.entity.ass}
-          '3': {name: punctuation.definition.entity.ass}
-  literal:
+    - name: meta.trait.re0
+      begin: (特质)\s+([\p{L}\d]+)+\s*{
+      beginCaptures:
+        '1':
+          name: keyword.control.re0
+        '2':
+          name: support.type.primitive.re0
+      end: "}"
+      patterns:
+      - include: "#id"
+      - include: "#description"
+      - include: "#options"
+      - include: "#conditions"
+      - include: "#effects"
+  event-group:
     patterns:
-      - match: \,
-        name: punctuation.separator.ass
-      - match: (\\)(n|N|h)
-        name: support.type.primitive.ass
-      - match: \d*:[0-5][0-9]:[0-5][0-9]\.\d{2}
-        name: support.function.time.ass
-      - match: \&H[0-9A-F]+
-        name: support.function.color.ass
-      - match: ([0-9+\-.]+)
-        name: constant.numeric.ass
-      - match: "[^,\r\n]+"
-        name: string.literal.ass
-  function:
+    - name: meta.event-group.re0
+      begin: (事件组)\s+([\p{L}\d]+)+\s*{
+      beginCaptures:
+        '1':
+          name: keyword.control.re0
+        '2':
+          name: support.type.primitive.re0
+      end: "}"
+      patterns:
+      - include: "#event-group-item"
+  event-group-item:
     patterns:
-      - name: support.type.primitive.ass
-        begin: "\{"
-        end: "\}"
-        patterns:
-          - include: '#functions'
-  functions:
+    - name: meta.event.re0
+      begin: (事件)?\s+([\p{L}\d]+)+\s*{
+      beginCaptures:
+        '1':
+          name: keyword.control.re0
+        '2':
+          name: support.type.primitive.re0
+      end: "}"
+      patterns:
+      - include: "#id"
+      - include: "#description"
+      - include: "#options"
+      - include: "#conditions"
+      - include: "#effects"
+  event:
     patterns:
-      - match: (\\)(s|u|i|b|k|K|an|be|bord|blur|fa[xyz]|fs|fsc|fsp|fsv|fscx|fscy|fr[xyz]|fe|shad|ko|kf|[xy]bord|[xy]shad|rnd|rnd[xyz])([0-9+\-.]+)
-        captures:
-          '3': {name: constant.numeric.ass}
-      - match: (\\)(1a|2a|3a|4a|1c|2c|3c|4c)(\&.*\&)
-        captures:
-          '3': {name: support.function.color.ass}
-      - match: (\\)(fn|r)([^{}]+)
-        captures:
-          '3': {name: string.literal.ass}
-      - begin: (\\)(t|clip|iclip|fad|fade|move|org|pos|distort|jitter)(\()
-        end: (\))
-        patterns:
-          - match: \,
-            name: punctuation.separator.ass
-          - match: ([0-9+\-.]+)
-            name: constant.numeric.ass
-          - match: ([a-zA-Z]+)
-            name: support.type.primitive.ass
-          - include: '#functions'
-  invalid:
+    - name: meta.event.re0
+      begin: (事件)\s+([\p{L}\d]+)+\s*{
+      beginCaptures:
+        '1':
+          name: keyword.control.re0
+        '2':
+          name: support.type.primitive.re0
+      end: "}"
+      patterns:
+      - include: "#id"
+      - include: "#description"
+      - include: "#options"
+      - include: "#conditions"
+      - include: "#effects"
+  id:
     patterns:
-      - match: (.*)
-        name: invalid.illegal.lyric
+    - match: ID\s+\d+
+      name: variable.other.property.re0
+  description:
+    patterns:
+    - match: (动态描述|描述)(?:\s+("[^"]+"))?
+      name: string.quoted.double.re0
+  options:
+    patterns:
+    - begin: (选项)\s*{
+      beginCaptures:
+        '0':
+          name: keyword.control.re0
+      end: "}"
+      patterns:
+      - include: "#option"
+      name: meta.options.re0
+  option:
+    patterns:
+    - name: constant.character.option.re0
+      match: \p{L}+
+  conditions:
+    patterns:
+    - begin: (要求)\s{
+      beginCaptures:
+        '0':
+          name: keyword.control.re0
+      end: "}"
+      patterns:
+      - include: "#condition"
+      name: meta.conditions.re0
+  condition:
+    patterns:
+    - match: "\\p{L}+\\s*[><=]\\s*\\d+"
+      name: keyword.operator.comparison.re0
+  effects:
+    patterns:
+    - begin: 效果\s*{
+      beginCaptures:
+        '0':
+          name: keyword.control.re0
+      end: "}"
+      patterns:
+      - include: "#effect"
+      name: meta.effects.re0
+  effect:
+    patterns:
+    - match: "\\p{L}\\s=\\s*\\d+"
+      name: variable.other.property.re0
+    - match: (若)\s+([\p{L}\d]+)\s+(有)\s*[
+      name: meta.condition.re0
+    - match: (否则)
+      name: keyword.control.re0
+  if-contains:
+    patterns:
+    - name: meta.if-contains.re0
+      begin: (若)\s+([\p{L}\d]+)\s+(有)\s*[
+      beginCaptures:
+        '1':
+          name: keyword.control.re0
+        '2':
+          name: support.type.primitive.re0
+        '3':
+          name: keyword.control.re0
+      end: "}"
+      patterns:
+      # - include: "#id"
+      # - include: "#description"
+      # - include: "#options"
+      # - include: "#conditions"
+      # - include: "#effects"
