@@ -1,13 +1,11 @@
 {
-    "id": "ass",
-    "version": "v0.4.0",
-    "name": "Aegisub",
-    "scopeName": "source.ass",
+    "id": "re0",
+    "uuid": "985735d9-c190-4f73-8c84-3628ac693154",
+    "name": "LifeRestart",
+    "scopeName": "source.re0",
     "fileTypes": [
-        "ass",
-        "ssa"
+        "life-restart"
     ],
-    "uuid": "90101069-65f0-4834-a2fa-faad3b9d1400",
     "information_for_contributors": [
         "aster: 19260817@qq.com"
     ],
