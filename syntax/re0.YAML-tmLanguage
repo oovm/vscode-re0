@@ -17,84 +17,79 @@ patterns:
 repository:
   comment:
     patterns:
-    - match: "//.$"
+    - match: "//.*$"
       name: comment.line.re0
   property:
+    name: meta.property.re0
+    begin: (属性)\s+([\p{L}\d]+)+\s*{
+    beginCaptures:
+      '1':
+        name: keyword.control.re0
+      '2':
+        name: support.type.primitive.re0
+    end: "}"
     patterns:
-    - name: meta.property.re0
-      begin: (属性)\s+([\p{L}\d]+)+\s*{
-      beginCaptures:
-        '1':
-          name: keyword.control.re0
-        '2':
-          name: support.type.primitive.re0
-      end: "}"
-      patterns:
-      - include: "#id"
-      - include: "#description"
-      - include: "#options"
-      - include: "#conditions"
-      - include: "#effects"
+    - include: "#id"
+    - include: "#description"
+    - include: "#options"
+    - include: "#requirements"
+    - include: "#effects"
   trait:
+    name: meta.trait.re0
+    begin: (特质)\s+([\p{L}\d]+)+\s*{
+    beginCaptures:
+      '1':
+        name: keyword.control.re0
+      '2':
+        name: support.type.primitive.re0
+    end: "}"
     patterns:
-    - name: meta.trait.re0
-      begin: (特质)\s+([\p{L}\d]+)+\s*{
-      beginCaptures:
-        '1':
-          name: keyword.control.re0
-        '2':
-          name: support.type.primitive.re0
-      end: "}"
-      patterns:
-      - include: "#id"
-      - include: "#description"
-      - include: "#options"
-      - include: "#conditions"
-      - include: "#effects"
+    - include: "#id"
+    - include: "#description"
+    - include: "#options"
+    - include: "#requirements"
+    - include: "#effects"
   event-group:
+    name: meta.event-group.re0
+    begin: (事件组)\s+([\p{L}\d]+)+\s*{
+    beginCaptures:
+      '1':
+        name: keyword.control.re0
+      '2':
+        name: support.type.primitive.re0
+    end: "}"
     patterns:
-    - name: meta.event-group.re0
-      begin: (事件组)\s+([\p{L}\d]+)+\s*{
-      beginCaptures:
-        '1':
-          name: keyword.control.re0
-        '2':
-          name: support.type.primitive.re0
-      end: "}"
-      patterns:
-      - include: "#event-group-item"
+    - include: "#event-group-item"
   event-group-item:
+    name: meta.event.re0
+    begin: (事件)?\s+([\p{L}\d]+)+\s*{
+    beginCaptures:
+      '1':
+        name: keyword.control.re0
+      '2':
+        name: support.type.primitive.re0
+    end: "}"
     patterns:
-    - name: meta.event.re0
-      begin: (事件)?\s+([\p{L}\d]+)+\s*{
-      beginCaptures:
-        '1':
-          name: keyword.control.re0
-        '2':
-          name: support.type.primitive.re0
-      end: "}"
-      patterns:
-      - include: "#id"
-      - include: "#description"
-      - include: "#options"
-      - include: "#conditions"
-      - include: "#effects"
+    - include: "#id"
+    - include: "#description"
+    - include: "#options"
+    - include: "#requirements"
+    - include: "#effects"
   event:
+    name: meta.event.re0
+    begin: (事件)\s+([\p{L}\d]+)+\s*{
+    beginCaptures:
+      '1':
+        name: keyword.control.re0
+      '2':
+        name: support.type.primitive.re0
+    end: "}"
     patterns:
-    - name: meta.event.re0
-      begin: (事件)\s+([\p{L}\d]+)+\s*{
-      beginCaptures:
-        '1':
-          name: keyword.control.re0
-        '2':
-          name: support.type.primitive.re0
-      end: "}"
-      patterns:
-      - include: "#id"
-      - include: "#description"
-      - include: "#options"
-      - include: "#conditions"
-      - include: "#effects"
+    - include: "#id"
+    - include: "#description"
+    - include: "#options"
+    - include: "#requirements"
+    - include: "#effects"
   id:
     patterns:
     - match: ID\s+\d+
@@ -104,66 +99,66 @@ repository:
     - match: (动态描述|描述)(?:\s+("[^"]+"))?
       name: string.quoted.double.re0
   options:
+    begin: (选项)\s*{
+    beginCaptures:
+      '0':
+        name: keyword.control.re0
+    end: "}"
     patterns:
-    - begin: (选项)\s*{
-      beginCaptures:
-        '0':
-          name: keyword.control.re0
-      end: "}"
-      patterns:
-      - include: "#option"
-      name: meta.options.re0
+    - include: "#option"
+    name: meta.options.re0
   option:
+    name: constant.character.option.re0
+    match: ([\p{L}\d]+)
+  requirements:
+    begin: (要求)\s{
+    beginCaptures:
+      '0':
+        name: keyword.control.re0
+    end: "}"
     patterns:
-    - name: constant.character.option.re0
-      match: \p{L}+
-  conditions:
-    patterns:
-    - begin: (要求)\s{
-      beginCaptures:
-        '0':
-          name: keyword.control.re0
-      end: "}"
-      patterns:
-      - include: "#condition"
-      name: meta.conditions.re0
-  condition:
-    patterns:
-    - match: "\\p{L}+\\s*[><=]\\s*\\d+"
-      name: keyword.operator.comparison.re0
+    - include: "#requirement-item"
+    name: meta.requirements.re0
+  requirement-item:
+    name: keyword.operator.comparison.re0
+    match: "\\p{L}+\\s*[><=]\\s*\\d+"
   effects:
+    name: meta.effects.re0
+    begin: (效果)\s*{
+    beginCaptures:
+      '1':
+        name: keyword.control.re0
+    end: "}"
     patterns:
-    - begin: 效果\s*{
-      beginCaptures:
-        '0':
-          name: keyword.control.re0
-      end: "}"
-      patterns:
-      - include: "#effect"
-      name: meta.effects.re0
-  effect:
-    patterns:
-    - match: "\\p{L}\\s=\\s*\\d+"
-      name: variable.other.property.re0
-    - match: (若)\s+([\p{L}\d]+)\s+(有)\s*[
-      name: meta.condition.re0
-    - match: (否则)
-      name: keyword.control.re0
+    - include: "#if-contains"
+    - include: "#if-else"
   if-contains:
+    name: meta.if-contains.re0
+    begin: (若)\s+([\p{L}\d]+)\s+(有)\s*{
+    beginCaptures:
+      '1':
+        name: keyword.control.re0
+      '2':
+        name: support.type.primitive.re0
+      '3':
+        name: keyword.control.re0
+    end: "}"
     patterns:
-    - name: meta.if-contains.re0
-      begin: (若)\s+([\p{L}\d]+)\s+(有)\s*[
-      beginCaptures:
-        '1':
-          name: keyword.control.re0
-        '2':
-          name: support.type.primitive.re0
-        '3':
-          name: keyword.control.re0
-      end: "}"
-      patterns:
       # - include: "#id"
       # - include: "#description"
       # - include: "#options"
-      # - include: "#conditions"
+      # - include: "#requirements"
+      # - include: "#effects"
+  if-else:
+    name: meta.if-else.re0
+    begin: (否则)\s*{
+    beginCaptures:
+      '1':
+        name: keyword.control.re0
+    end: "}"
+    patterns:
+      # - include: "#id"
+      # - include: "#description"
+      # - include: "#options"
+      # - include: "#requirements"
       # - include: "#effects"
