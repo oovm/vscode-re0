@@ -57,7 +57,7 @@
           "include": "#绑定编号"
         },
         {
-          "include": "#description"
+          "include": "#描述"
         },
         {
           "include": "#options"
@@ -90,13 +90,13 @@
           "include": "#绑定编号"
         },
         {
+          "include": "#描述"
+        },
+        {
           "include": "#排除项"
         },
         {
           "include": "#效果"
-        },
-        {
-          "include": "#description"
         },
         {
           "include": "#options"
@@ -120,11 +120,11 @@
       "end": "}",
       "patterns": [
         {
-          "include": "#定义事件组事件"
+          "include": "#事件组事件"
         }
       ]
     },
-    "定义事件组事件": {
+    "事件组事件": {
       "name": "meta.event.re0",
       "begin": "(事件)?\\s+([\\p{L}\\d]+)+\\s*{",
       "beginCaptures": {
@@ -144,13 +144,16 @@
           "include": "#绑定编号"
         },
         {
+          "include": "#描述"
+        },
+        {
+          "include": "#稀有度"
+        },
+        {
           "include": "#排除项"
         },
         {
           "include": "#效果"
-        },
-        {
-          "include": "#description"
         },
         {
           "include": "#options"
@@ -174,19 +177,28 @@
       "end": "}",
       "patterns": [
         {
+          "include": "#注释"
+        },
+        {
           "include": "#绑定编号"
         },
         {
-          "include": "#description"
+          "include": "#描述"
+        },
+        {
+          "include": "#稀有度"
+        },
+        {
+          "include": "#排除项"
+        },
+        {
+          "include": "#效果"
         },
         {
           "include": "#options"
         },
         {
           "include": "#requirements"
-        },
-        {
-          "include": "#效果"
         }
       ]
     },
@@ -194,11 +206,33 @@
       "match": "([Ii][Dd])\\s+(\\d+)",
       "name": "variable.other.property.re0"
     },
-    "description": {
+    "描述": {
+      "name": "string.quoted.double.re0",
+      "match": "(动态描述|描述)(?:\\s+(\"[^\"]+\"))?"
+    },
+    "稀有度": {
       "patterns": [
         {
-          "match": "(动态描述|描述)(?:\\s+(\"[^\"]+\"))?",
-          "name": "string.quoted.double.re0"
+          "match": "(稀有度|品质)\\s+(\\d+)",
+          "captures": {
+            "1": {
+              "name": "keyword.control.re0"
+            },
+            "2": {
+              "name": "keyword.control.re0"
+            }
+          }
+        },
+        {
+          "match": "(稀有度|品质)\\s+([\\p{L}\\d]+)",
+          "captures": {
+            "1": {
+              "name": "keyword.control.re0"
+            },
+            "2": {
+              "name": "keyword.control.re0"
+            }
+          }
         }
       ]
     },

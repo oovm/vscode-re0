@@ -2,7 +2,7 @@
     "name": "vscode-re0",
     "displayName": "Life Restart Support",
     "description": "VSCode support for life restart script",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "icon": "icon.png",
     "publisher": "aster",
     "repository": {
