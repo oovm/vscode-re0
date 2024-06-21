@@ -60,7 +60,7 @@
           "include": "#描述"
         },
         {
-          "include": "#options"
+          "include": "#选项"
         },
         {
           "include": "#requirements"
@@ -99,7 +99,7 @@
           "include": "#效果"
         },
         {
-          "include": "#options"
+          "include": "#选项"
         },
         {
           "include": "#requirements"
@@ -156,7 +156,7 @@
           "include": "#效果"
         },
         {
-          "include": "#options"
+          "include": "#选项"
         },
         {
           "include": "#requirements"
@@ -195,7 +195,7 @@
           "include": "#效果"
         },
         {
-          "include": "#options"
+          "include": "#选项"
         },
         {
           "include": "#requirements"
@@ -275,27 +275,54 @@
         }
       ]
     },
-    "options": {
-      "begin": "(选项)\\s*{",
-      "beginCaptures": {
-        "0": {
-          "name": "keyword.control.re0"
-        }
-      },
-      "end": "}",
+    "选项": {
       "patterns": [
         {
-          "include": "#option"
+          "begin": "(选项|枚举|options)\\s*\\[",
+          "beginCaptures": {
+            "0": {
+              "name": "keyword.control.re0"
+            }
+          },
+          "end": "]",
+          "patterns": [
+            {
+              "include": "#选项-权重"
+            },
+            {
+              "include": "#选项-名称"
+            }
+          ]
+        },
+        {
+          "begin": "(选项|枚举|options)\\s*{",
+          "beginCaptures": {
+            "0": {
+              "name": "keyword.control.re0"
+            }
+          },
+          "end": "}",
+          "patterns": [
+            {
+              "include": "#选项-权重"
+            },
+            {
+              "include": "#选项-名称"
+            }
+          ]
         }
-      ],
-      "name": "meta.options.re0"
+      ]
     },
-    "option": {
+    "选项-权重": {
+      "name": "constant.character.option.re0",
+      "match": "(\\d+)\\s*(:)"
+    },
+    "选项-名称": {
       "name": "constant.character.option.re0",
       "match": "([\\p{L}\\d]+)"
     },
     "requirements": {
-      "begin": "(要求|requires?)\\s{",
+      "begin": "(显示要求|出现要求|要求|requires?)\\s{",
       "beginCaptures": {
         "0": {
           "name": "keyword.control.re0"
@@ -324,40 +351,42 @@
       "end": "}",
       "patterns": [
         {
-          "include": "#若有"
-        },
-        {
-          "include": "#否则"
+          "include": "#表达式关键词"
         }
       ]
     },
-    "若有": {
-      "name": "meta.if-contains.re0",
-      "begin": "(若)\\s+([\\p{L}\\d]+)\\s+(有)\\[([^\\])]\\s*{",
-      "beginCaptures": {
-        "1": {
-          "name": "keyword.control.re0"
+    "表达式关键词": {
+      "patterns": [
+        {
+          "name": "keyword.control.re0",
+          "match": "(若|若有|若无|或者|否则|if|else)"
         },
-        "2": {
-          "name": "support.type.primitive.re0"
+        {
+          "name": "keyword.operator.comparison.re0",
+          "match": "([+\\-*/])"
         },
-        "3": {
-          "name": "keyword.control.re0"
+        {
+          "name": "keyword.operator.re0",
+          "match": "([\\p{L}\\d]+)\\s+(有|无|has|contains)",
+          "captures": {
+            "1": {
+              "name": "constant.player.re0"
+            },
+            "2": {
+              "name": "keyword.operator.comparison.re0"
+            }
+          }
+        },
+        {
+          "name": "meta.statements.re0",
+          "begin": "{",
+          "end": "}"
+        },
+        {
+          "name": "keyword.operator.re0",
+          "match": "([+\\-*/])"
         }
-      },
-      "end": "}",
-      "patterns": null
-    },
-    "否则": {
-      "name": "meta.if-else.re0",
-      "begin": "(否则)\\s*{",
-      "beginCaptures": {
-        "1": {
-          "name": "keyword.control.re0"
-        }
-      },
-      "end": "}",
-      "patterns": null
+      ]
     }
   }
 }
